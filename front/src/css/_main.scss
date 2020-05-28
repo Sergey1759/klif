@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Open Sans Regular';
+  src: url('../fonts/OpenSans.woff2') format('woff2'),
+      url('../fonts/OpenSans.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Bold';
+  src: url('../fonts/OpenSans-Bold.woff2') format('woff2'),
+      url('../fonts/OpenSans-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+input:focus::placeholder {
+  color: transparent;
+}

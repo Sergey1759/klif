@@ -1,0 +1,127 @@
+.sign {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: $bg;
+  font-family: $sansR;
+  font-size: 20px;
+  &__logo {
+    height: 105px;
+    margin-bottom: 45px;
+  }
+}
+
+.sign-form {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  border-radius: 5px;
+  padding: 25px;
+  background-color: $bgLight;
+  box-shadow: 0px 0px 11px -3px black;
+  &__title {
+    height: 65px;
+    width: 100%;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    background-color: $white;
+    color: $textP;
+  }
+  &__inputs {
+    margin-top: 80px;
+    margin-bottom: 15px;
+  }
+  &__restore {
+    margin-bottom: 25px;
+  }
+}
+
+.sign-inputs {
+  width: 100%;
+  &__field {
+    height: 30px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: flex-start;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  &__img {
+    height: 15px;
+    width: 15px;
+    margin-right: 10px;
+  }
+  &__input {
+    width: 245px;
+    padding-bottom: 10px;
+    background-color: $bgLight;
+    border: none;
+    border-bottom: 1px solid $grey;
+    outline: none;
+    color: $white;
+    &_invalid {
+      border-bottom: 1px solid $red;
+    }
+    &::placeholder {
+      color: $white;
+    }
+  }
+}
+
+.restore {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  &__img {
+    height: 15px;
+    width: 15px;
+    margin-right: 10px;
+  }
+  &__link {
+    font-size: 12px;
+    text-decoration: none;
+    color: $grey;
+    transition: .2s;
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+.sign-buttons {
+  width: 100%;
+  height: 45px;
+  background-color: $bgButton;
+  border-radius: 5px;
+  box-shadow: 3px 3px 6px 0px black;
+  &__button {
+    height: 100%;
+    width: 50%;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    color: $white;
+    background-color: $bgButton;
+    font-size: 16px;
+    cursor: pointer;
+    transition: .2s;
+    &_active {
+      background-color: $bgActive;
+    }
+    &:disabled {
+      background-color: $bgActiveInvalid;
+      cursor: not-allowed;
+    }
+  }
+}
