@@ -74,6 +74,7 @@
       border-bottom: 1px solid $red;
     }
     &::placeholder {
+      font-family: $sansR;
       color: $white;
     }
   }

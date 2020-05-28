@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {validate} from '../../validFramework';
 import Mail from './mail.svg';
 import Key from './key.svg';
 import Restore from './restore.svg';
-import Logo from './logo.svg';
+import Logo from '../../img/logo.svg';
 import Phone from './phone.svg';
 import Name from './name.svg';
 
-export default class Sign extends Component {
+class Sign extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,8 @@ export default class Sign extends Component {
         valid: false
       },
       signType: 'signIn',
-      response: false,
+      loginResponse: false,
+      registrateResponse: false,
       showError: false
     }
   }
@@ -84,7 +85,7 @@ export default class Sign extends Component {
       .then(response => {
         localStorage.setItem('token', response.token);
         console.log('logged in')
-        this.setState({response});
+        this.setState({loginResponse: response});
       })
       .catch(error => this.setState({showError: true}))
   }
@@ -107,11 +108,12 @@ export default class Sign extends Component {
       }
     })
       .then(response => response.json())
-      .then(response => this.setState({response}))
+      .then(response => this.setState({registrateResponse: response}))
       .catch(error => this.setState({showError: true}))
 
-    if (this.state.response) {
-      console.log('registrate')
+    if (this.state.registrateResponse) {
+      console.log('registrate');
+      this.props.history.push('/emailConfirm');
       this.changeSignTypeHandler('signIn');
     }
   }
@@ -158,7 +160,7 @@ export default class Sign extends Component {
     const clsPhone = !this.state.phone.valid && this.state.phone.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
     return (
       <div className="sign">
-        <img src={Logo} alt="" className="sign__logo"/>
+        <img src={Logo} alt="Logo" className="sign__logo"/>
         <div className="sign-form">
           <div className="sign-form__title">
             Добро пожаловать
@@ -207,7 +209,7 @@ export default class Sign extends Component {
           </div>
           <div className="sign-form__restore restore">
             <img src={Restore} alt="" className="restore__img"/>
-            <Link to="#" className="restore__link">Восстановить пароль</Link>
+            <Link to="/passwordRestore" className="restore__link">Восстановить пароль</Link>
           </div>
           <div className="sign-form__buttons sign-buttons">
             <button 
@@ -226,3 +228,5 @@ export default class Sign extends Component {
     )
   }
 }
+
+export default withRouter(Sign);
