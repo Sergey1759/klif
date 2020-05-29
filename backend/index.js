@@ -1,94 +1,41 @@
 const express = require('express');
 const config = require('config');
-const database = require('./database');
 const bodyParser = require('body-parser');
+
+const app = express();
+
+const ApiToken = require('./api/jwt/JsonWebToken');
+const customer = require('./api/user/customer');
+const database = require('./database');
+const auth = require('./service/auth');
+const user = require('./classes/user');
+const user_route = require('./routes/user');
+const mailer = require('./service/mailer');
 
 const PORT = config.get('port') || 5000;
 
-const app = express();
+app.use('/user/', require('./routes/user'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 async function start(){
-    database.connect();
+    database.connectDatabase();
+    // let m = await customer.query.getAll()
+    // console.log(m)
+    // let k = await customer.query.insert('sergey', 'listskiy');
+    // console.log(k)
+    req = {};
+    req.body = {};
+    req.body.name = '----qweeqwe';
+    req.body.lastname = 'qweeqwe123123';
+    req.body.password = 'qweeqwe123123';
+    req.body.email = 'qweeqwe123123';
+    // mailer('lisichka1759@gmail.com');
+    // let m = await auth.authetication(req);
+    // console.log(m)
+    // let res = await customer.query.insert('123',123123);
+    // console.log(res);
     app.listen(PORT, () => { console.log(`server has been started in port ${PORT}`)});
-    console.log(2)
-    console.log(2)
 }
-let m = [
-    {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-            "street": "Kulas Light",
-            "suite": "Apt. 556",
-            "city": "Gwenborough",
-            "zipcode": "92998-3874",
-            "geo": {
-                "lat": "-37.3159",
-                "lng": "81.1496"
-            }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-            "name": "Romaguera-Crona",
-            "catchPhrase": "Multi-layered client-server neural-net",
-            "bs": "harness real-time e-markets"
-        }
-    },
-    {
-        "id": 2,
-        "name": "Ervin Howell",
-        "username": "Antonette",
-        "email": "Shanna@melissa.tv",
-        "address": {
-            "street": "Victor Plains",
-            "suite": "Suite 879",
-            "city": "Wisokyburgh",
-            "zipcode": "90566-7771",
-            "geo": {
-                "lat": "-43.9509",
-                "lng": "-34.4618"
-            }
-        },
-        "phone": "010-692-6593 x09125",
-        "website": "anastasia.net",
-        "company": {
-            "name": "Deckow-Crist",
-            "catchPhrase": "Proactive didactic contingency",
-            "bs": "synergize scalable supply-chains"
-        }
-    },
-    {
-        "id": 3,
-        "name": "Clementine Bauch",
-        "username": "Samantha",
-        "email": "Nathan@yesenia.net",
-        "address": {
-            "street": "Douglas Extension",
-            "suite": "Suite 847",
-            "city": "McKenziehaven",
-            "zipcode": "59590-4157",
-            "geo": {
-                "lat": "-68.6102",
-                "lng": "-47.0653"
-            }
-        },
-        "phone": "1-463-123-4447",
-        "website": "ramiro.info",
-        "company": {
-            "name": "Romaguera-Jacobson",
-            "catchPhrase": "Face to face bifurcated interface",
-            "bs": "e-enable strategic applications"
-        }
-    },
-];
-app.get('/users', (req, res) => {
-     res.send(m);
-});
-app.get('/qwe', (req, res) => {
-    res.send(m);
-});
+
 start();
