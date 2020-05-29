@@ -8,25 +8,48 @@ class PasswordRestore extends Component {
     this.state = {
       confirmCode: '',
       newPassword: '',
-      showError: false
+      email: '',
+      emailEntered: false,
+      showError: false,
+      response: true
     }
   }
 
-  restorePasswordHandler = async () => {
-    await fetch(`http://localhost:???`, {
-      method: 'POST',
-      body: JSON.stringify(this.state.confirmCode),
-      headers: {
-        'Content-Type': 'application/json'
+  clickHandler = async () => {
+    if (!this.state.emailEntered) {
+      await fetch(`http://localhost:???`, {
+        method: 'POST',
+        body: JSON.stringify(this.state.confirmCode),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(response => this.setState({response}))
+        .catch(error => this.setState({showError: true}))
+  
+      if (this.state.response) {
+        this.setState({
+          response: false,
+          emailEntered: true
+        })
       }
-    })
-      .then(response => response.json())
-      .then(response => this.setState({response}))
-      .catch(error => this.setState({showError: true}))
-
-    if (this.state.response) {
-      console.log('Passwrd was changed!');
-      this.props.history.push('/');
+    } else {
+      await fetch(`http://localhost:???`, {
+        method: 'POST',
+        body: JSON.stringify(this.state.confirmCode),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(response => this.setState({response}))
+        .catch(error => this.setState({showError: true}))
+  
+      if (this.state.response) {
+        console.log('Passwrd was changed!');
+        this.props.history.push('/');
+      }
     }
   }
 
@@ -34,21 +57,31 @@ class PasswordRestore extends Component {
     return (
       <div className="passwordRestore">
         <img src={Logo} alt="Logo" className="passwordRestore__logo"/>
-        <input
-          type="text"
-          className="passwordRestore__input"
-          value={this.state.confirmCode} 
-          placeholder="Введите код подтверждения отправленный вам на почту"
-          onChange={e => this.setState({confirmCode: e.target.value})}/>
-        <input
-          type="text"
-          className="passwordRestore__input"
-          value={this.state.confirmCode} 
-          placeholder="Введите новый пароль"
-          onChange={e => this.setState({newPassword: e.target.value})}/>
+        {!this.state.emailEntered
+          ? <input
+              type="text"
+              className="passwordRestore__input"
+              value={this.state.email} 
+              placeholder="Введите вашу почту"
+              onChange={e => this.setState({email: e.target.value})}/>
+          : <React.Fragment>
+              <input
+                type="text"
+                className="passwordRestore__input"
+                value={this.state.confirmCode} 
+                placeholder="Введите код подтверждения отправленный вам на почту"
+                onChange={e => this.setState({confirmCode: e.target.value})}/>
+              <input
+                type="text"
+                className="passwordRestore__input"
+                value={this.state.newPassword} 
+                placeholder="Введите новый пароль"
+                onChange={e => this.setState({newPassword: e.target.value})}/>
+            </React.Fragment>
+        }
         <button 
           className="passwordRestore__button"
-          onClick={() => this.restorePasswordHandler()}>
+          onClick={() => this.clickHandler()}>
             Отправить</button>
       </div>    
     )
