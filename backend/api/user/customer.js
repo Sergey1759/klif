@@ -7,11 +7,22 @@ query.getAll =  () => {
 };
 
 query.getById =  (id) => {
-    return ConstructorQuery(`select * from customers where id = ${id}`)();
+    return ConstructorQuery(`select * from customers where id = '${id}'`)();
+};
+query.getByEmailAndPassword =  (email, password) => {
+    return ConstructorQuery(`select * from customers where email = '${email}' AND password = '${password}';`)();
 };
 
-query.insert =  (name,lastname,password, email) => {
-    return ConstructorQuery(`INSERT INTO customers (name,lastname,password,email) VALUES('${name}','${lastname}','${password}','${email}');`)();
+query.getByEmail =  (email) => {
+    return ConstructorQuery(`select * from customers where email = '${email}'`)();
+};
+
+query.setCode =  (code, email) => {
+    return ConstructorQuery(`UPDATE customers SET code = '${code}' where email = '${email}'`)();
+};
+
+query.insert =  (name,phone,password, email) => {
+    return ConstructorQuery(`INSERT INTO customers (name,phone,password,email) VALUES('${name}','${phone}','${password}','${email}');`)();
 };
 
 

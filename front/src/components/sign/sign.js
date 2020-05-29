@@ -74,7 +74,7 @@ class Sign extends Component {
       user_password: this.state.password.value
     }
 
-    await fetch(`http://localhost:???`, {
+    await fetch(`http://localhost:5000/user/login`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: {
@@ -100,7 +100,7 @@ class Sign extends Component {
       user_phone: this.state.phone.value
     }
 
-    await fetch(`http://localhost:???`, {
+    await fetch(`http://localhost:5000/user/signup`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: {

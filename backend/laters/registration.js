@@ -6,7 +6,8 @@ function createLatter(code) {
         text : 'babytransfer one love',
         html : `
         <h1> Успешная регистрация. Введите код - ${code} в  поле подтверждение по email</h1>
-        `
+        `,
+        code: code
     }
 }
 

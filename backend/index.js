@@ -3,7 +3,11 @@ const config = require('config');
 const bodyParser = require('body-parser');
 
 const app = express();
+const cors = require('cors')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
+app.use(cors())
 const ApiToken = require('./api/jwt/JsonWebToken');
 const customer = require('./api/user/customer');
 const database = require('./database');
@@ -15,8 +19,7 @@ const mailer = require('./service/mailer');
 const PORT = config.get('port') || 5000;
 
 app.use('/user/', require('./routes/user'));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
 
 async function start(){
     database.connectDatabase();
