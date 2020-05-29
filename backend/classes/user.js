@@ -28,6 +28,8 @@ class User {
     }
 }
 
+console.log('s');
+
 
 module.exports = {
     User
