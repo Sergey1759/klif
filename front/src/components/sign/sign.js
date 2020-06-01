@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {validate} from '../../validFramework';
+import PasswordRestore from './passwordRestore/passwordRestore';
+import EmailConfirm from './emailConfirm/emailConfirm';
 import Mail from './mail.svg';
 import Key from './key.svg';
 import Restore from './restore.svg';
@@ -33,6 +35,7 @@ class Sign extends Component {
         valid: false
       },
       signType: 'signIn',
+      pageType: 'sign',
       loginResponse: false,
       registrateResponse: false,
       showError: false
@@ -113,9 +116,35 @@ class Sign extends Component {
 
     if (this.state.registrateResponse) {
       console.log('registrate');
-      this.props.history.push('/emailConfirm');
-      this.changeSignTypeHandler('signIn');
+      this.setState({pageType: 'emailConfirm'});
     }
+  }
+
+  changePageTypeHandler = pageType => {
+    this.setState({
+      signType: 'signIn',
+      pageType,
+      name: {
+        value: '',
+        touched: false,
+        valid: false
+      },
+      phone: {
+        value: '',
+        touched: false,
+        valid: false
+      },
+      email: {
+        value: '',
+        touched: false,
+        valid: false
+      },
+      password: {
+        value: '',
+        touched: false,
+        valid: false
+      }
+    })
   }
 
   changeSignTypeHandler = signType => {
@@ -150,21 +179,17 @@ class Sign extends Component {
     }
   }
 
-  render() {
-    const signInCls = this.state.signType === 'signIn' ? 'sign-buttons__button sign-buttons__button_active' : 'sign-buttons__button';
-    const signUpCls = this.state.signType === 'signUp' ? 'sign-buttons__button sign-buttons__button_active' : 'sign-buttons__button';
-    
-    const clsName = !this.state.name.valid && this.state.name.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
-    const clsEmail = !this.state.email.valid && this.state.email.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
-    const clsPassword = !this.state.password.valid && this.state.password.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
-    const clsPhone = !this.state.phone.valid && this.state.phone.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
-    return (
-      <div className="sign">
-        <img src={Logo} alt="Logo" className="sign__logo"/>
-        <div className="sign-form">
-          <div className="sign-form__title">
-            Добро пожаловать
-          </div>
+  formRenderHandler = () => {
+    if (this.state.pageType === 'sign') {
+      const signInCls = this.state.signType === 'signIn' ? 'sign-buttons__button sign-buttons__button_active' : 'sign-buttons__button';
+      const signUpCls = this.state.signType === 'signUp' ? 'sign-buttons__button sign-buttons__button_active' : 'sign-buttons__button';
+      
+      const clsName = !this.state.name.valid && this.state.name.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
+      const clsEmail = !this.state.email.valid && this.state.email.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
+      const clsPassword = !this.state.password.valid && this.state.password.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
+      const clsPhone = !this.state.phone.valid && this.state.phone.touched ? "sign-inputs__input sign-inputs__input_invalid" : "sign-inputs__input";
+      return (
+        <React.Fragment>
           <div className="sign-form__inputs sign-inputs">
             {this.state.signType === 'signUp'
               ? <React.Fragment>
@@ -191,7 +216,7 @@ class Sign extends Component {
             <div className="sign-inputs__field">
               <img src={Mail} alt="Mail" className="sign-inputs__img"/>
               <input
-                type="text"
+                type="email"
                 className={clsEmail}
                 value={this.state.email.value} 
                 placeholder="Введите e-mail"
@@ -199,18 +224,20 @@ class Sign extends Component {
             </div>
             <div className="sign-inputs__field">
               <img src={Key} alt="Password" className="sign-inputs__img"/>
-              <input
-                type="text"
+              <input 
+                type="password"
                 className={clsPassword}
                 value={this.state.password.value} 
                 placeholder="Введите ваш пароль"
                 onChange={e => this.valuesChangeHandler('password', e.target.value)}/>
             </div>
           </div>
-          <div className="sign-form__restore restore">
-            <img src={Restore} alt="" className="restore__img"/>
-            <Link to="/passwordRestore" className="restore__link">Восстановить пароль</Link>
-          </div>
+          {this.state.signType === 'signIn'
+            ? <div className="sign-form__restore restore">
+                <img src={Restore} alt="" className="restore__img"/>
+                <span onClick={() => this.setState({pageType: 'passwordRestore'})} className="restore__link">Восстановить пароль</span>
+              </div>
+            : null}
           <div className="sign-form__buttons sign-buttons">
             <button 
               className={signInCls}
@@ -223,6 +250,34 @@ class Sign extends Component {
               disabled={!this.isAllValidHandler() && this.state.signType === 'signUp'}>
                 Регистрация</button>
           </div>
+        </React.Fragment>
+      )
+    } else {
+      return (
+        <React.Fragment>
+          {this.state.pageType === 'emailConfirm'
+            ? <EmailConfirm onChangePageType={this.changePageTypeHandler}/>
+            : <PasswordRestore onChangePageType={this.changePageTypeHandler}/>}
+        </React.Fragment>
+      )
+    }
+  }
+
+  titleRenderHandler = () => {
+    if (this.state.pageType === 'sign') return 'Добро пожаловать'
+    else if (this.state.pageType === 'emailConfirm') return 'Подтвердите почту'
+    else return 'Восстановление пароля';
+  }
+
+  render() {
+    return (
+      <div className="sign">
+        <img src={Logo} alt="Logo" className="sign__logo"/>
+        <div className="sign-form">
+          <div className="sign-form__title">
+            {this.titleRenderHandler()}
+          </div>
+          {this.formRenderHandler()}
         </div>
       </div>
     )

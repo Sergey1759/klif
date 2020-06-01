@@ -38,7 +38,7 @@
     color: $textP;
   }
   &__inputs {
-    margin-top: 80px;
+    margin-top: 40px;
     margin-bottom: 15px;
   }
   &__restore {
@@ -53,6 +53,9 @@
     margin-bottom: 25px;
     display: flex;
     align-items: flex-start;
+    &:first-child {
+      margin-top: 40px;
+    }
     &:last-child {
       margin-bottom: 0;
     }
@@ -72,6 +75,16 @@
     color: $white;
     &_invalid {
       border-bottom: 1px solid $red;
+    }
+    &_confirm_theme {
+      width: 100%;
+      margin-bottom: 25px;
+      &:first-child {
+        margin-top: 30px;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
     &::placeholder {
       font-family: $sansR;
@@ -94,6 +107,7 @@
     text-decoration: none;
     color: $grey;
     transition: .2s;
+    cursor: pointer;
     &:hover {
       color: $white;
     }
@@ -118,6 +132,10 @@
     cursor: pointer;
     transition: .2s;
     &_active {
+      background-color: $bgActive;
+    }
+    &_confirm_theme {
+      width: 100%;
       background-color: $bgActive;
     }
     &:disabled {
