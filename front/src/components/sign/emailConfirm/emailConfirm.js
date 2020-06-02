@@ -11,9 +11,12 @@ class EmailConfirm extends Component {
   }
 
   confirmEmailHandler = async () => {
-    await fetch(`http://localhost:???`, {
+    await fetch(`http://localhost:5000/user/confirm`, {
       method: 'POST',
-      body: JSON.stringify(this.state.confirmCode),
+      body: JSON.stringify({
+            confirmCode : this.state.confirmCode,
+            insert_id : localStorage.getItem('insertId')
+          }),
       headers: {
         'Content-Type': 'application/json'
       }

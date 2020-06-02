@@ -15,7 +15,7 @@ class PasswordRestore extends Component {
 
   clickHandler = async () => {
     if (!this.state.emailEntered) {
-      await fetch(`http://localhost:???`, {
+      await fetch(`http://localhost:5000/user/resetpassword`, {
         method: 'POST',
         body: JSON.stringify(this.state.email),
         headers: {
@@ -23,7 +23,10 @@ class PasswordRestore extends Component {
         }
       })
         .then(response => response.json())
-        .then(response => this.setState({response}))
+        .then(response => {
+          localStorage.setItem('userId', response.user);
+          this.setState({response})
+        })
         .catch(error => this.setState({showError: true}))
   
       if (this.state.response) {
@@ -33,9 +36,13 @@ class PasswordRestore extends Component {
         })
       }
     } else {
-      await fetch(`http://localhost:???`, {
+      await fetch(`http://localhost:5000/user/confirmpassword`, {
         method: 'POST',
-        body: JSON.stringify({confirmCode: this.state.confirmCode, newPassword: this.state.newPassword}),
+        body: JSON.stringify({
+          confirmCode: this.state.confirmCode,
+          newPassword: this.state.newPassword,
+          userId: localStorage.getItem('userId')
+        }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -45,7 +52,7 @@ class PasswordRestore extends Component {
         .catch(error => this.setState({showError: true}))
   
       if (this.state.response) {
-        console.log('Passwrd was changed!');
+        console.log('Password was changed!');
         this.props.onChangePageType('sign');
       }
     }

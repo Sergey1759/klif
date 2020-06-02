@@ -17,7 +17,7 @@ class PasswordRestore extends Component {
 
   clickHandler = async () => {
     if (!this.state.emailEntered) {
-      await fetch(`http://localhost:???`, {
+      await fetch(`http://localhost:5000/user/resetpassword`, {
         method: 'POST',
         body: JSON.stringify(this.state.email),
         headers: {
@@ -35,7 +35,7 @@ class PasswordRestore extends Component {
         })
       }
     } else {
-      await fetch(`http://localhost:???`, {
+      await fetch(`http://localhost:5000/confirmpassword`, {
         method: 'POST',
         body: JSON.stringify({confirmCode: this.state.confirmCode, newPassword: this.state.newPassword}),
         headers: {

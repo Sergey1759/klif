@@ -111,7 +111,10 @@ class Sign extends Component {
       }
     })
       .then(response => response.json())
-      .then(response => this.setState({registrateResponse: response}))
+      .then(response => {
+        localStorage.setItem('insertId', response.insertId);
+        this.setState({registrateResponse: response});
+      })
       .catch(error => this.setState({showError: true}))
 
     if (this.state.registrateResponse) {
