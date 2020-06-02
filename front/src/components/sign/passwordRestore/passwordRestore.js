@@ -15,13 +15,13 @@ class PasswordRestore extends Component {
 
   clickHandler = async () => {
     if (!this.state.emailEntered) {
-      await fetch(`http://localhost:5000/user/resetpassword`, {
-        method: 'POST',
-        body: JSON.stringify(this.state.email),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+        await fetch(`http://localhost:5000/user/resetpassword`, {
+            method: 'POST',
+            body: JSON.stringify({user_email : this.state.email}),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then(response => response.json())
         .then(response => {
           localStorage.setItem('userId', response.user);
